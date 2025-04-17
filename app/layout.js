@@ -1,7 +1,7 @@
 import { Geist, Geist_Mono, Outfit } from "next/font/google";
 import "./globals.css";
 import Header from "./_components/Header";
-
+import NextAuthSessionProvider from "./provider";
 const geistSans = Geist({
   variable: "--font-geist-sans",
   subsets: ["latin"],
@@ -25,14 +25,16 @@ export const metadata = {
 export default function RootLayout({ children }) {
   return (
     <html lang="en">
-      <body
-        className={`${outfit.variable} antialiased`}
-      >
+      <body className={`${outfit.variable} antialiased`}>
 
-        <div className="mx-6 md:mx-16">
-          <Header />
-          {children}
-        </div>
+
+        <NextAuthSessionProvider>
+          <div className="mx-6 md:mx-16">
+            <Header />
+            {children}
+          </div>
+        </NextAuthSessionProvider>
+
 
       </body>
     </html>
