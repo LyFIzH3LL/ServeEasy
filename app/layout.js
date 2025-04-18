@@ -2,6 +2,7 @@ import { Geist, Geist_Mono, Outfit } from "next/font/google";
 import "./globals.css";
 import Header from "./_components/Header";
 import NextAuthSessionProvider from "./provider";
+import { Toaster } from "sonner";
 const geistSans = Geist({
   variable: "--font-geist-sans",
   subsets: ["latin"],
@@ -31,6 +32,7 @@ export default function RootLayout({ children }) {
         <NextAuthSessionProvider>
           <div className="mx-6 md:mx-16">
             <Header />
+            <Toaster />
             {children}
           </div>
         </NextAuthSessionProvider>

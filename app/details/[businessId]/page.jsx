@@ -8,49 +8,50 @@ import BusinessDescription from '@/app/details/_components/BusinessDescription';
 import SuggestedBusinessList from '@/app/details/_components/SugesstedBusinessList';
 
 function BusinessDetail() {
-
-
-
     const { data, status } = useSession();
     const params = useParams();
     const businessId = params?.businessId;
-    const [business, setBusiness] = useState([]);
-
+    const [business, setBusiness] = useState(null);
 
     useEffect(() => {
-
         checkUserAuth();
-
-    })
+    }, [status]); // Watch for status changes
 
     const checkUserAuth = () => {
-
-
-        if (status == 'loading') {
-            <p>Loading...</p>
+        if (status === 'loading') {
+            return; // Handle loading state
         }
 
-        if (status == 'unauthenticated') {
-            signIn('descope');
+        if (status === 'unauthenticated') {
+            signIn('descope'); // Trigger sign-in if not authenticated
         }
-
     }
-
 
     useEffect(() => {
         if (businessId) {
             GlobalApi.getBusinessById(businessId)
                 .then((resp) => {
-                    console.log(resp);
-                    setBusiness(resp.businessList);
+                    console.log("Business Response:", resp); // Log the full response to check the structure
+                    setBusiness(resp?.businessList || null); // Access the businessList correctly
                 })
+                .catch((error) => {
+                    console.error("Error fetching business data:", error);
+                });
         }
-    }, [businessId])
+    }, [businessId]); // Fetch business when businessId changes
 
+    // Return early if business or session is not available
+    if (status === 'loading') {
+        return <p>Loading...</p>; // You can display a loading spinner or message here
+    }
 
-    return status == 'authenticated' && (
+    if (status === 'unauthenticated') {
+        return null; // You can redirect or show a message here if the user is unauthenticated
+    }
+
+    return status === 'authenticated' && business ? (
         <div className='py-8 md:py-20 px-10 md:px-36'>
-
+            {/* Pass business data only when it exists */}
             <BusinessInfo business={business} />
 
             <div className='grid grid-cols-3 mt-16'>
@@ -61,9 +62,8 @@ function BusinessDetail() {
                     <SuggestedBusinessList business={business} />
                 </div>
             </div>
-
         </div>
-    )
+    ) : null; // If no business or session, return null
 }
 
-export default BusinessDetail
+export default BusinessDetail;

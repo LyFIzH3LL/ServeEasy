@@ -13,6 +13,7 @@ import {
 
 
 } from '@/components/ui/dropdown-menu'
+import Link from 'next/link'
 
 
 function Header() {
@@ -28,9 +29,9 @@ function Header() {
     return (
         <div className='p-5 shadow-sm flex items-center justify-between'>
             <div className='flex items-center gap-6 '>
-                <Image src='/logoipsum-243.svg' alt='logo' width={180} height={100} />
+                <Image src='/ServeEasyLogo.svg' alt='logo' width={180} height={100} />
                 <div className='md:flex gap-6 items-center hidden'>
-                    <h2 className='hover:scale-105 hover:text-blue-900 cursor-pointer'>Home</h2>
+                    <Link href={'/'} className='hover:scale-105 hover:text-blue-900 cursor-pointer'>Home</Link>
                     <h2 className='hover:scale-105 hover:text-blue-900 cursor-pointer'>Services</h2>
                     <h2 className='hover:scale-105 hover:text-blue-900 cursor-pointer'>About Us</h2>
                 </div>
@@ -52,7 +53,10 @@ function Header() {
                         <DropdownMenuContent>
                             <DropdownMenuLabel>Welcome, {data?.user?.name}</DropdownMenuLabel>
                             <DropdownMenuSeparator />
-                            <DropdownMenuItem>My Bookings</DropdownMenuItem>
+                            <DropdownMenuItem>
+                                <Link href={'/myBooking'}>  My Bookings </Link>
+
+                            </DropdownMenuItem>
                             <DropdownMenuItem onClick={() => { signOut() }}>Log Out</DropdownMenuItem>
                         </DropdownMenuContent>
                     </DropdownMenu>
