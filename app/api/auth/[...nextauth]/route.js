@@ -1,16 +1,15 @@
-import NextAuth from "next-auth/next";
+import NextAuth from "next-auth";
 
-
-export const authOptions = {
+const handler = NextAuth({
     providers: [
         {
             id: "descope",
             name: "Descope",
             type: "oauth",
-            wellKnown: `https://api.descope.com/P2vMATlLf08N2hhP21JpajEclPk7/.well-known/openid-configuration`,
+            wellKnown: "https://api.descope.com/P2vMATlLf08N2hhP21JpajEclPk7/.well-known/openid-configuration",
             authorization: { params: { scope: "openid email profile" } },
             idToken: true,
-            clientId: "P2vMATlLf08N2hhP21JpajEclPk7",
+            clientId: process.env.NEXT_PUBLIC_DESCOPE_PROJECT_ID,
             clientSecret: "<Descope Access Key>",
             checks: ["pkce", "state"],
             profile(profile) {
@@ -19,12 +18,10 @@ export const authOptions = {
                     name: profile.name,
                     email: profile.email,
                     image: profile.picture,
-                }
+                };
             },
-        }
+        },
     ],
-}
+});
 
-const handler = NextAuth(authOptions)
-
-export { handler as GET, handler as POST }
+export { handler as GET, handler as POST };
